@@ -16,7 +16,6 @@ Este projeto implementa um sistema IoT completo para monitoramento de enchentes 
 
 - ESP32 (com simulação via Wokwi)
 - Sensor ultrassônico HC-SR04
-- Sensor ambiental (temperatura/umidade)
 - Node-RED (nuvem)
 - MQTT (broker público)
 - API CallMeBot → envio de alertas via WhatsApp
@@ -52,8 +51,6 @@ O sistema identifica níveis de risco e envia alertas automaticamente, além de 
      - Distância da água
      - Status da enchente
      - Distribuição dos eventos
-     - Temperatura
-     - Umidade
 
 ---
 
