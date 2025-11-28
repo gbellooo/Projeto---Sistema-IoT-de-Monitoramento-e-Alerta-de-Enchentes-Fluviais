@@ -1,0 +1,245 @@
+[
+    {
+        "id": "3fcf679f4b8cef5d",
+        "type": "tab",
+        "label": "Fluxo 1",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "c92c4c7a7c5e0c21",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "broker.hivemq.com",
+        "port": 1883,
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "0de6ce26a88c4a87",
+        "type": "influxdb",
+        "hostname": "127.0.0.1",
+        "port": 8086,
+        "protocol": "http",
+        "database": "database",
+        "name": "",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "2.0",
+        "url": "https://us-east-1-1.aws.cloud2.influxdata.com",
+        "timeout": 10,
+        "rejectUnauthorized": true
+    },
+    {
+        "id": "a9821d6c25a93493",
+        "type": "influxdb",
+        "hostname": "127.0.0.1",
+        "port": 8086,
+        "protocol": "http",
+        "database": "database",
+        "name": "",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "2.0",
+        "url": "https://us-east-1-1.aws.cloud2.influxdata.com",
+        "timeout": 10,
+        "rejectUnauthorized": true
+    },
+    {
+        "id": "f1571144b0e66834",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "broker.hivemq.com",
+        "port": 1883,
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 60,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "1c741fb654533c2b",
+        "type": "node-red-contrib-whatsapp-cmb-account",
+        "name": "CallMeBot"
+    },
+    {
+        "id": "545090f201de40af",
+        "type": "influxdb",
+        "hostname": "127.0.0.1",
+        "port": 8086,
+        "protocol": "http",
+        "database": "database",
+        "name": "InfluxDB Account",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "2.0",
+        "url": "https://us-east-1-1.aws.cloud2.influxdata.com",
+        "timeout": 10,
+        "rejectUnauthorized": true
+    },
+    {
+        "id": "7aa22758a43bdaec",
+        "type": "mqtt in",
+        "z": "3fcf679f4b8cef5d",
+        "name": "Enchente",
+        "topic": "mackenzie/enchente",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "f1571144b0e66834",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 220,
+        "y": 220,
+        "wires": [
+            [
+                "012a2dd2900e7d1b",
+                "da722af19870c819"
+            ]
+        ]
+    },
+    {
+        "id": "18cb984cd9fda248",
+        "type": "debug",
+        "z": "3fcf679f4b8cef5d",
+        "name": "debug 2",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1060,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "da722af19870c819",
+        "type": "influxdb out",
+        "z": "3fcf679f4b8cef5d",
+        "influxdb": "545090f201de40af",
+        "name": "InfluxDB Account",
+        "measurement": "enchente",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "database",
+        "precisionV18FluxV20": "ms",
+        "retentionPolicyV18Flux": "",
+        "org": "IoT",
+        "bucket": "bucket_dados",
+        "x": 570,
+        "y": 320,
+        "wires": []
+    },
+    {
+        "id": "f945017b042d0a5a",
+        "type": "node-red-contrib-whatsapp-cmb-send-message",
+        "z": "3fcf679f4b8cef5d",
+        "name": "",
+        "credtype": "account",
+        "account": "1c741fb654533c2b",
+        "text": "payload",
+        "phonenumbervalue": "",
+        "apikeyvalue": "",
+        "apikeyinputtypemessage": "msg",
+        "phonenumberinputtypemessage": "msg",
+        "inputtypemessage": "msg",
+        "rejectssl": false,
+        "x": 800,
+        "y": 140,
+        "wires": [
+            [
+                "18cb984cd9fda248"
+            ]
+        ]
+    },
+    {
+        "id": "012a2dd2900e7d1b",
+        "type": "json",
+        "z": "3fcf679f4b8cef5d",
+        "name": "",
+        "property": "payload",
+        "action": "obj",
+        "pretty": false,
+        "x": 430,
+        "y": 140,
+        "wires": [
+            [
+                "a8f58e63c53194d8"
+            ]
+        ]
+    },
+    {
+        "id": "a8f58e63c53194d8",
+        "type": "function",
+        "z": "3fcf679f4b8cef5d",
+        "name": "function 1",
+        "func": "let distancia = msg.payload.distancia;\nlet status = msg.payload.status;\n\n// Garantir que é número (WhatsApp odeia \"undefined\")\ndistancia = Number(distancia).toFixed(2);\n\nmsg.payload = \n  \"⚠️ Alerta de Monitoramento ⚠️\\n\" +\n  \"Distância medida: \" + distancia + \" cm\\n\" +\n  \"Status atual: \" + status;\n\nreturn msg;\n",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 600,
+        "y": 140,
+        "wires": [
+            [
+                "f945017b042d0a5a"
+            ]
+        ]
+    },
+    {
+        "id": "060f1e1f43b1422f",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-contrib-influxdb": "0.7.0",
+            "node-red-contrib-whatsapp-cmb": "1.0.3"
+        }
+    }
+]
