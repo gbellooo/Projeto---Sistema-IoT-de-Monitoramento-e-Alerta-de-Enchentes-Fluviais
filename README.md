@@ -10,7 +10,7 @@ Gabriel Bello - 10416808@mackenzista.com.br
 
 ---
 
-## 📌 Descrição Geral do Projeto
+##  Descrição Geral do Projeto
 
 Este projeto implementa um sistema IoT completo para monitoramento de enchentes usando:
 
@@ -26,7 +26,7 @@ O sistema identifica níveis de risco e envia alertas automaticamente, além de 
 
 ---
 
-## 🛰️ Arquitetura Geral do Sistema
+##  Arquitetura Geral do Sistema
 
 1. **ESP32 – Sensor Ultrassônico**
    - Mede distância da água em cm
@@ -35,8 +35,10 @@ O sistema identifica níveis de risco e envia alertas automaticamente, além de 
    - Envia dados via MQTT
 
 2. **ESP32 – Estação Ambiental**
-   - Mede temperatura e umidade (DHT22 simulado)
-   - Envia tudo via MQTT
+   - ESP32 atuador assina tópico de status
+   - LED e buzzer para alertas locais
+   - Publica telemetria, eventos e estado
+   - Envia contadores e tempos por tópico MQTT
 
 3. **Node-RED**
    - Recebe dados do MQTT
@@ -54,7 +56,7 @@ O sistema identifica níveis de risco e envia alertas automaticamente, além de 
 
 ---
 
-## 🔧 Funcionamento dos Sensores
+## Funcionamento dos Sensores
 
 ### **Sensor Ultrassônico (HC-SR04)**
 - Emite um pulso sonoro e calcula o tempo de retorno
@@ -70,7 +72,7 @@ O sistema identifica níveis de risco e envia alertas automaticamente, além de 
 
 ---
 
-## 🔊 Funcionamento dos Atuadores
+##  Funcionamento dos Atuadores
 
 ### **LED Vermelho**
 - Acende somente em **ENCHENTE**
@@ -80,9 +82,9 @@ O sistema identifica níveis de risco e envia alertas automaticamente, além de 
 
 ---
 
-## 📡 Integração com APIs
+## Integração com APIs
 
-### **API CalmBot – WhatsApp**
+### **API CallMeBot – WhatsApp**
 Utilizada para envio automático de:
 
 - Alertas de enchente
@@ -91,21 +93,45 @@ Utilizada para envio automático de:
 
 Node-RED monta e envia a mensagem formatada em texto.
 
----
+```mermaid
+flowchart TD
+    %% Estilos
+    classDef startend fill:#000000,stroke:#000000,color:#ffffff,font-weight:bold;
+    classDef device fill:#cce5ff,stroke:#004a99,stroke-width:1px;
+    classDef cloud fill:#ffeeba,stroke:#b38600,stroke-width:1px;
+    classDef db fill:#d4edda,stroke:#1e7e34,stroke-width:1px;
+    classDef service fill:#f8d7da,stroke:#721c24,stroke-width:1px;
 
-## 🗄️ Integração com o Banco de Dados (InfluxDB)
+    %% Início e fim
+    START((INÍCIO)):::startend
+    END((FIM)):::startend
 
-O Node-RED envia registros no formato:
+    %% Nós
+    S1[ESP32 Sensor<br/>HC-SR04<br/>Mede distância]:::device
+    MQTT[(Broker MQTT<br/>HiveMQ)]:::cloud
+    A1[ESP32 Atuador<br/>LED + Buzzer<br/>Recebe status]:::device
+    NR[Node-RED<br/>Fluxos & Processamento]:::service
+    INF[(InfluxDB<br/>Banco de Dados)]:::db
+    GF[Grafana<br/>Dashboards]:::service
+    API[API CalmBot<br/>WhatsApp]:::cloud
+    USER[[Usuário<br/>Recebe alertas]]:::device
 
-```json
-[
-  {
-    "measurement": "enchente",
-    "tags": {
-      "status": "SEGURO"
-    },
-    "fields": {
-      "distancia": 21.03
-    }
-  }
-]
+    %% Fluxo
+    START --> S1
+    S1 -->|Publica JSON<br/>com status| MQTT
+    MQTT -->|Repasse de status| A1
+    A1 -->|Telemetria<br/>contadores + uptime| MQTT
+    MQTT --> NR
+
+    NR -->|Escreve dados| INF
+    NR -->|Gera alerta| API
+
+    INF -->|Consulta| GF
+    API --> USER
+    GF --> USER
+
+    USER --> END
+```
+
+
+   
